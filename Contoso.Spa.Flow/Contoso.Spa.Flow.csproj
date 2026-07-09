@@ -1,0 +1,181 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Rulesets\about.module" />
+    <None Remove="Rulesets\about.resources" />
+    <None Remove="Rulesets\courses.module" />
+    <None Remove="Rulesets\courses.resources" />
+    <None Remove="Rulesets\departments.module" />
+    <None Remove="Rulesets\departments.resources" />
+    <None Remove="Rulesets\home.module" />
+    <None Remove="Rulesets\home.resources" />
+    <None Remove="Rulesets\initial.module" />
+    <None Remove="Rulesets\initial.resources" />
+    <None Remove="Rulesets\instructors.module" />
+    <None Remove="Rulesets\instructors.resources" />
+    <None Remove="Rulesets\item_filter_courses.module" />
+    <None Remove="Rulesets\item_filter_courses.resources" />
+    <None Remove="Rulesets\item_filter_departments.module" />
+    <None Remove="Rulesets\item_filter_departments.resources" />
+    <None Remove="Rulesets\item_filter_instructors.module" />
+    <None Remove="Rulesets\item_filter_instructors.resources" />
+    <None Remove="Rulesets\item_filter_students.module" />
+    <None Remove="Rulesets\item_filter_students.resources" />
+    <None Remove="Rulesets\nav_about.module" />
+    <None Remove="Rulesets\nav_about.resources" />
+    <None Remove="Rulesets\nav_courses.module" />
+    <None Remove="Rulesets\nav_courses.resources" />
+    <None Remove="Rulesets\nav_departments.module" />
+    <None Remove="Rulesets\nav_departments.resources" />
+    <None Remove="Rulesets\nav_home.module" />
+    <None Remove="Rulesets\nav_home.resources" />
+    <None Remove="Rulesets\nav_instructors.module" />
+    <None Remove="Rulesets\nav_instructors.resources" />
+    <None Remove="Rulesets\nav_students.module" />
+    <None Remove="Rulesets\nav_students.resources" />
+    <None Remove="Rulesets\students.module" />
+    <None Remove="Rulesets\students.resources" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Rulesets\about.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\about.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\courses.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\courses.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\departments.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\departments.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\home.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\home.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\initial.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\initial.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\instructors.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\instructors.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_courses.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_courses.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_departments.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_departments.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_instructors.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_instructors.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_students.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\item_filter_students.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_about.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_about.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_courses.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_courses.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_departments.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_departments.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_home.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_home.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_instructors.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_instructors.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_students.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_students.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\students.module">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\students.resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+		<PackageReference Include="LogicBuilder.App.Spa.AutoMapperProfiles" Version="1.0.2" />
+    <PackageReference Include="LogicBuilder.App.Spa.Forms.Configuration" Version="1.0.1" />
+    <PackageReference Include="LogicBuilder.App.Spa.Forms.Parameters" Version="1.0.1" />
+    <PackageReference Include="LogicBuilder.App.Utils" Version="1.0.3" />
+    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Data\Contoso.Data.csproj" />
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

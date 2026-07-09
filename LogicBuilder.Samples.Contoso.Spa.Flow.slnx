@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Business/">
+    <Project Path="Contoso.Domain/Contoso.Domain.csproj" />
+  </Folder>
+  <Folder Name="/EF/">
+    <Project Path="Contoso.Data/Contoso.Data.csproj" />
+  </Folder>
+  <Folder Name="/SPA/">
+    <Project Path="Contoso.Spa.Flow/Contoso.Spa.Flow.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Contoso.Spa.Flow.Tests/Contoso.Spa.Flow.Tests.csproj" />
+  </Folder>
+</Solution>

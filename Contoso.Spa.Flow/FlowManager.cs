@@ -1,0 +1,159 @@
+﻿using Contoso.Spa.Flow.Cache;
+using Contoso.Spa.Flow.Cache.Interfaces;
+using Contoso.Spa.Flow.Dialogs;
+using Contoso.Spa.Flow.Factories;
+using Contoso.Spa.Flow.Interfaces;
+using Contoso.Spa.Flow.Requests;
+using Contoso.Spa.Flow.ScreenSettings;
+using Contoso.Spa.Flow.ScreenSettings.Views;
+using LogicBuilder.App.Spa.Forms.Configuration;
+using LogicBuilder.RulesDirector;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
+
+namespace Contoso.Spa.Flow
+{
+    public class FlowManager : IFlowManager
+    {
+        private readonly ILogger<FlowManager> _logger;
+
+        public FlowManager(
+            ILogger<FlowManager> logger,
+            IFlowDataCache flowDataCache,
+            IFlowFactory flowFactory,
+            Progress progress,
+            IRulesCache rulesCache,
+            IServiceProvider serviceProvider)
+        {
+            _logger = logger;
+            FlowDataCache = flowDataCache;
+            Progress = progress;
+            RulesCache = rulesCache;
+            ServiceProvider = serviceProvider;
+            Director = flowFactory.GetDirector(this);
+            FlowActivity = flowFactory.GetFlowActivity(this);
+        }
+
+        public DirectorBase Director { get; }
+
+        public IFlowDataCache FlowDataCache { get; }
+
+        public Progress Progress { get; }
+
+        public IFlowActivity FlowActivity { get; }
+
+        public IRulesCache RulesCache { get; }
+
+        public IServiceProvider ServiceProvider { get; }
+
+        private FlowSettings FlowSettings
+           => new
+           (
+               ((Director)this.Director).FlowState,
+               FlowDataCache.NavigationBar,
+               FlowDataCache.ScreenSettings ?? throw new ArgumentException($"{nameof(FlowDataCache.ScreenSettings)}: {{60B6AFD1-2247-4775-BE99-F3F650A15B0F}}")
+           );
+
+        public void FlowComplete()
+        {
+            if (_logger.IsEnabled(LogLevel.Information))
+                _logger.LogInformation("FlowComplete {Progress}", JsonSerializer.Serialize(this.Progress));
+            FlowDataCache.ScreenSettings = new ScreenSettings<object>(null!, Array.Empty<CommandButtonDescriptor>(), ViewType.FlowComplete);
+        }
+
+        public FlowSettings NavStart(NavBarRequest navBarRequest)
+        {
+            try
+            {
+                FlowDataCache.RequestedFlowStage = new RequestedFlowStage
+                {
+                    InitialModule = navBarRequest.InitialModuleName ?? throw new ArgumentException($"{nameof(navBarRequest.InitialModuleName)}: {{91027670-3D9A-444C-A1C9-03B19BC53C19}}"),
+                    TargetModule = navBarRequest.TargetModule
+                };
+
+                this.Director.StartInitialFlow(FlowDataCache.RequestedFlowStage.InitialModule);
+
+                return this.FlowSettings;
+            }
+            catch (Exception ex)
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                    _logger.LogInformation("NavStart {Progress}", JsonSerializer.Serialize(this.Progress));
+                _logger.LogError(ex, "NavStart Exception: {Message}", ex.Message);
+                return this.GetFlowSettings(ex);
+            }
+        }
+
+        public FlowSettings Next(RequestBase request)
+        {
+            try
+            {
+                IDialogHandler handler = BaseDialogHandler.Create(request);
+
+                handler.Complete(this, request);
+                this.Director.ExecuteRulesEngine();
+
+                return this.FlowSettings;
+            }
+            catch (Exception ex)
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                    _logger.LogInformation("Progress Next {Progress}", JsonSerializer.Serialize(this.Progress));
+                _logger.LogError(ex, "Next Exception: {Message}", ex.Message);
+                return this.GetFlowSettings(ex);
+            }
+        }
+
+        public void RunFlow(string flowName)
+        {
+            try
+            {
+                this.Director.StartInitialFlow(flowName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: {Message}", ex.Message);
+                throw new InvalidOperationException($"{flowName} falied.", ex);
+            }
+        }
+
+        public void SetCurrentBusinessBackupData()
+        {
+        }
+
+        public FlowSettings Start(string module, int stage)
+        {
+            try
+            {
+                FlowDataCache.RequestedFlowStage = new RequestedFlowStage { InitialModule = module, TargetModule = stage };
+                this.Director.StartInitialFlow(module);
+                return this.FlowSettings;
+            }
+            catch (Exception ex)
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                    _logger.LogInformation("Progress Start{Progress}", JsonSerializer.Serialize(this.Progress));
+                _logger.LogError(ex, "Exception: {Message}", ex.Message);
+                return this.GetFlowSettings(ex);
+            }
+        }
+
+        public void Terminate()
+        {
+            throw new NotImplementedException();
+        }
+
+        private FlowSettings GetFlowSettings(Exception ex)
+            => new
+            (
+                ((Director)this.Director).FlowState,
+                FlowDataCache.NavigationBar,
+                new ScreenSettings<ExceptionView>
+                (
+                    new ExceptionView { Message = ex.Message },
+                    Array.Empty<CommandButtonDescriptor>(),
+                    ViewType.Exception
+                )
+            );
+    }
+}
