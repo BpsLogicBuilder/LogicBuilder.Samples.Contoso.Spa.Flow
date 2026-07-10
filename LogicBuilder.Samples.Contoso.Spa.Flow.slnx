@@ -1,9 +1,18 @@
 <Solution>
+  <Folder Name="/API/">
+    <Project Path="Contoso.Spa.Api/Contoso.Spa.Api.csproj" Id="9f4f4be2-c3ab-4647-8c1f-3288a7a3a410" />
+  </Folder>
   <Folder Name="/Business/">
     <Project Path="Contoso.Domain/Contoso.Domain.csproj" />
   </Folder>
   <Folder Name="/EF/">
     <Project Path="Contoso.Data/Contoso.Data.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/check-for-ab-number.yml" />
+    <File Path=".github/workflows/ci.yml" />
+    <File Path="CHANGELOG.md" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/SPA/">
     <Project Path="Contoso.Spa.Flow/Contoso.Spa.Flow.csproj" />
