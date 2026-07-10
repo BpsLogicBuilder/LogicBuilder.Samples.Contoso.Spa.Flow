@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Contoso.Domain.Entities;
 using Contoso.Spa.Flow.Cache;
 using Contoso.Spa.Flow.Interfaces;
+using Contoso.Spa.Flow.Requests;
 using Contoso.Spa.Flow.ScreenSettings.Views;
 using LogicBuilder.App.Spa.AutoMapperProfiles;
 using LogicBuilder.App.Spa.Forms.Configuration.Common;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Contoso.Spa.Flow.Tests
 {
@@ -96,6 +99,113 @@ namespace Contoso.Spa.Flow.Tests
             var screenSettings = Assert.IsType<ScreenSettings<GridSettingsDescriptor>>(result.ScreenSettings);
             Assert.Equal(ViewType.Grid, result.ScreenSettings.ViewType);
             Assert.Equal("Departments", screenSettings.Settings.Title);
+        }
+
+        [Fact]
+        public void FlowWithDepartmentsTarget_CanVisitCreateScreen_AndReturnToGrid()
+        {
+            //arrange
+            IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
+
+            //act
+            var firstResult = flowManager.Start(initialFlow, TargetModules.Departments);
+            var firstScreenSettings = (ScreenSettings<GridSettingsDescriptor>)firstResult.ScreenSettings;
+            var selectedButton = firstScreenSettings.CommandButtons!.First(b => b.ShortString == "departments_CREATE");
+            var secondResult = flowManager.Next
+            (
+                new GridRequest
+                {
+                    CommandButtonRequest = new CommandButtonRequest { NewSelection = selectedButton.ShortString },
+                    FlowState = ((Director)flowManager.Director).FlowState,
+                    ViewType = ViewType.Grid
+                }
+            );
+
+            //assert
+            var secondScreenSettings = Assert.IsType<ScreenSettings<EditFormSettingsDescriptor>>(secondResult.ScreenSettings);
+            Assert.Equal(ViewType.Create, secondScreenSettings.ViewType);
+            Assert.Equal("Department", secondScreenSettings.Settings.Title);
+        }
+
+        [Fact]
+        public void FlowWithDepartmentsTarget_CanVisitEditScreen_AndReturnToGrid()
+        {
+            //arrange
+            IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
+
+            //act
+            var firstResult = flowManager.Start(initialFlow, TargetModules.Departments);
+            var firstScreenSettings = (ScreenSettings<GridSettingsDescriptor>)firstResult.ScreenSettings;
+            var selectedButton = firstScreenSettings.CommandButtons!.First(b => b.ShortString == "departments_EDIT");
+            var secondResult = flowManager.Next
+            (
+                new GridRequest
+                {
+                    CommandButtonRequest = new CommandButtonRequest { NewSelection = selectedButton.ShortString },
+                    Entity = new DepartmentModel { DepartmentID = 1 },
+                    FlowState = ((Director)flowManager.Director).FlowState,
+                    ViewType = ViewType.Grid
+                }
+            );
+
+            //assert
+            var secondScreenSettings = Assert.IsType<ScreenSettings<EditFormSettingsDescriptor>>(secondResult.ScreenSettings);
+            Assert.Equal(ViewType.Edit, secondScreenSettings.ViewType);
+            Assert.Equal("Department", secondScreenSettings.Settings.Title);
+        }
+
+        [Fact]
+        public void FlowWithDepartmentsTarget_CanVisitDetailScreen_AndReturnToGrid()
+        {
+            //arrange
+            IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
+
+            //act
+            var firstResult = flowManager.Start(initialFlow, TargetModules.Departments);
+            var firstScreenSettings = (ScreenSettings<GridSettingsDescriptor>)firstResult.ScreenSettings;
+            var selectedButton = firstScreenSettings.CommandButtons!.First(b => b.ShortString == "departments_DETAIL");
+            var secondResult = flowManager.Next
+            (
+                new GridRequest
+                {
+                    CommandButtonRequest = new CommandButtonRequest { NewSelection = selectedButton.ShortString },
+                    Entity = new DepartmentModel { DepartmentID = 1 },
+                    FlowState = ((Director)flowManager.Director).FlowState,
+                    ViewType = ViewType.Grid
+                }
+            );
+
+            //assert
+            var secondScreenSettings = Assert.IsType<ScreenSettings<DetailFormSettingsDescriptor>>(secondResult.ScreenSettings);
+            Assert.Equal(ViewType.Detail, secondScreenSettings.ViewType);
+            Assert.Equal("Department", secondScreenSettings.Settings.Title);
+        }
+
+        [Fact]
+        public void FlowWithDepartmentsTarget_CanVisitDeleteScreen_AndReturnToGrid()
+        {
+            //arrange
+            IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
+
+            //act
+            var firstResult = flowManager.Start(initialFlow, TargetModules.Departments);
+            var firstScreenSettings = (ScreenSettings<GridSettingsDescriptor>)firstResult.ScreenSettings;
+            var selectedButton = firstScreenSettings.CommandButtons!.First(b => b.ShortString == "departments_DELETE");
+            var secondResult = flowManager.Next
+            (
+                new GridRequest
+                {
+                    CommandButtonRequest = new CommandButtonRequest { NewSelection = selectedButton.ShortString },
+                    Entity = new DepartmentModel { DepartmentID = 1 },
+                    FlowState = ((Director)flowManager.Director).FlowState,
+                    ViewType = ViewType.Grid
+                }
+            );
+
+            //assert
+            var secondScreenSettings = Assert.IsType<ScreenSettings<DetailFormSettingsDescriptor>>(secondResult.ScreenSettings);
+            Assert.Equal(ViewType.Delete, secondScreenSettings.ViewType);
+            Assert.Equal("Department", secondScreenSettings.Settings.Title);
         }
 
         [Fact]

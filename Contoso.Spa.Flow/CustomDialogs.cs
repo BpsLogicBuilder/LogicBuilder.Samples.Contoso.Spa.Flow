@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Contoso.Spa.Flow.Cache;
 using Contoso.Spa.Flow.Cache.Interfaces;
 using Contoso.Spa.Flow.Interfaces;
 using Contoso.Spa.Flow.ScreenSettings.Views;
