@@ -4,6 +4,7 @@ using Contoso.Spa.Flow.Cache;
 using Contoso.Spa.Flow.Cache.Interfaces;
 using Contoso.Spa.Flow.Interfaces;
 using LogicBuilder.App.Spa.AutoMapperProfiles;
+using LogicBuilder.App.Utils.Rules;
 using LogicBuilder.EntityFrameworkCore.Mapping;
 using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -19,7 +20,24 @@ namespace Microsoft.Extensions.DependencyInjection
             return services
                 .AddAppUtilsServices()
                 .AddFlowFactories()
-                .AddRulesCacheService()
+                .AddRulesCacheService
+                (
+                    new RulesLoaderRequest
+                    (
+                        "Contoso.Spa.Flow.Rulesets",
+                        typeof(FlowActivity),
+                        [
+                            typeof(LogicBuilder.App.Utils.Interfaces.ITypeHelper).Assembly,
+                            typeof(LogicBuilder.App.Spa.Forms.Parameters.CommandButtonParameters).Assembly,
+                            typeof(LogicBuilder.App.Spa.Forms.Configuration.CommandButtonDescriptor).Assembly,
+                            typeof(LogicBuilder.Forms.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
+                            typeof(Contoso.Domain.Entities.StudentModel).Assembly,
+                            typeof(Contoso.Data.Entities.Course).Assembly,
+                            typeof(DirectorBase).Assembly,
+                            typeof(string).Assembly
+                        ]
+                    )
+                )
                 .AddTransient<ICustomActions, CustomActions>()
                 .AddTransient<ICustomDialogs, CustomDialogs>()
                 .AddTransient<IFlowManager, FlowManager>()
