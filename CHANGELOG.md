@@ -1,3 +1,4 @@
+* 2026-07-13 - AB#190: Shared library for rules cache registration and rules loading.
 * 2026-07-10 - AB#172: Plus one Sonar recommendation.
 * 2026-07-10 - AB#172: Dockerfile must run as nonroot.
 * 2026-07-10 - AB#172: Remove unrequired test file name.

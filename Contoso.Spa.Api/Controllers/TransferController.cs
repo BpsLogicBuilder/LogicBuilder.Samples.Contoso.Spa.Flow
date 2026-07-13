@@ -1,5 +1,6 @@
-﻿using Contoso.Spa.Flow.Rules;
-using Contoso.Spa.Flow.Rules.Interfaces;
+﻿using Contoso.Spa.Flow;
+using LogicBuilder.App.Utils.Rules;
+using LogicBuilder.App.Utils.Rules.Interfaces;
 using LogicBuilder.DataContracts;
 using LogicBuilder.RulesDirector;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,22 @@ namespace Contoso.Spa.Api.Controllers
                         moduleData.ResourcesStream,
                         moduleData.RulesStream
                     ),
-                    _rulesCache
+                    _rulesCache,
+                    new RulesLoaderRequest
+                    (
+                        "Contoso.Spa.Flow.Rulesets",
+                        typeof(FlowActivity),
+                        [
+                            typeof(LogicBuilder.App.Utils.Interfaces.ITypeHelper).Assembly,
+                            typeof(LogicBuilder.App.Spa.Forms.Parameters.CommandButtonParameters).Assembly,
+                            typeof(LogicBuilder.App.Spa.Forms.Configuration.CommandButtonDescriptor).Assembly,
+                            typeof(LogicBuilder.Forms.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
+                            typeof(Domain.Entities.StudentModel).Assembly,
+                            typeof(Data.Entities.Course).Assembly,
+                            typeof(DirectorBase).Assembly,
+                            typeof(string).Assembly
+                        ]
+                    )
                 );
 
                 return NoContent();
