@@ -1,0 +1,6 @@
+services:
+  contoso.spa.api:
+    image: ${DOCKER_REGISTRY-}contosospaapi
+    build:
+      context: .
+      dockerfile: Contoso.Spa.Api/Dockerfile
