@@ -1,0 +1,7 @@
+$rg = "rg-test"
+$acrName="<Get ACR name from portal>"
+$imageTag="v1.0.0"
+
+az acr build --registry $acrName --image "contosospaapi:${imageTag}" --image contosospaapi:latest --file ./Contoso.Spa.Api/Dockerfile .
+
+az deployment group create --resource-group $rg --template-file infrastructure/contosospaapi.bicep --parameters imageTag="$imageTag"
