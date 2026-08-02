@@ -91,7 +91,7 @@ jobs:
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
       run: |
-        ACR_NAME=$(az acr list --resource-group "${{ env.RESOURCE_GROUP} }" --query "[0].name" -o tsv)
+        ACR_NAME=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].name" -o tsv)
         echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
         echo "registry_name=$ACR_NAME" >> $GITHUB_OUTPUT
 
@@ -100,7 +100,7 @@ jobs:
       env:
         REGISTRY_NAME: ${{ steps.get_acr_name.outputs.registry_name}}
       run: |
-          ACR_SERVER=$(az acr show --name "${{ env.REGISTRY_NAME } }" --query "loginServer" --output tsv)
+          ACR_SERVER=$(az acr show --name "${{ env.REGISTRY_NAME }}" --query "loginServer" --output tsv)
           echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
 
     - name: Build and Upload Image
