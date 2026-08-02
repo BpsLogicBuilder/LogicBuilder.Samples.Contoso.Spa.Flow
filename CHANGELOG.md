@@ -1,3 +1,4 @@
+* 2026-08-02 - AB#176: Use full commit SHA hash for GH Action dependencies.
 * 2026-08-02 - AB#176: Add YAML for deployment workflow.
 * 2026-08-01 - AB#176: Fix typo in CORS policy Allowed Headers.
 * 2026-07-31 - AB#176: Add Bicep file for image update.

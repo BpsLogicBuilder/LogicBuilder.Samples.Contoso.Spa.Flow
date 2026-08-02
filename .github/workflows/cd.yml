@@ -80,7 +80,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v6
 
-    - uses: azure/login@v2
+    - uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5
       with:
         client-id: ${{ secrets.ARM_DEPLOYER_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -113,7 +113,7 @@ jobs:
         az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image contosospaapi:${{ env.IMAGE_TAG }} --image contosospaapi:latest --file ./Contoso.Spa.Api/Dockerfile .
 
     - name: Update Container App image source
-      uses: azure/arm-deploy@v1
+      uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
