@@ -1,7 +1,7 @@
-name: CI
+name: CD
 
 on:
-  pull_request:
+  push:
     branches: [ master ]
 
 env:
@@ -66,3 +66,60 @@ jobs:
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  deploy-container-app:
+    name: Deploy Workfow App
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'BpsLogicBuilder'
+    permissions:
+      id-token: write
+      contents: read
+    needs: test
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.ARM_DEPLOYER_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Get Existing ACR Login Server
+      id: get_acr_name
+      env:
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+      run: |
+        ACR_NAME=$(az acr list --resource-group "${{ env.RESOURCE_GROUP} }" --query "[0].name" -o tsv)
+        echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+        echo "registry_name=$ACR_NAME" >> $GITHUB_OUTPUT
+
+    - name: Get Existing ACR Login Server
+      id: get_login_server
+      env:
+        REGISTRY_NAME: ${{ steps.get_acr_name.outputs.registry_name}}
+      run: |
+          ACR_SERVER=$(az acr show --name "${{ env.REGISTRY_NAME } }" --query "loginServer" --output tsv)
+          echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
+
+    - name: Build and Upload Image
+      env:
+        ACR_LOGIN_SERVER: ${{ steps.deployAcrStep.outputs.acrLoginServer}}
+        IMAGE_TAG: "v1.0.${{ github.run_number }}"
+        ACR_LOGIN_SERVER_NAME: ${{ steps.get_login_server.outputs.login_server}}
+      run: |
+        echo "ACR Name ${{ env.ACR_NAME }}"
+        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image contosospaapi:${{ env.IMAGE_TAG }} --image contosospaapi:latest --file ./Contoso.Spa.Api/Dockerfile .
+
+    - name: Update Container App image source
+      uses: azure/arm-deploy@v1
+      env:
+        IMAGE_TAG: "v1.0.${{ github.run_number }}"
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ env.RESOURCE_GROUP}}
+        parameters: imageTag=${{ env.IMAGE_TAG }}
+        template: ./infrastructure/contosospaapi.bicep
+        failOnStdErr: false
