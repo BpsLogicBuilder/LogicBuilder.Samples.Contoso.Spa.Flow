@@ -87,30 +87,21 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Get Existing ACR Login Server
-      id: get_acr_name
+      id: get_login_server
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO }}
       run: |
-        ACR_NAME=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].name" -o tsv)
-        echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
-        echo "registry_name=$ACR_NAME" >> $GITHUB_OUTPUT
-
-    - name: Get Existing ACR Login Server
-      id: get_login_server
-      env:
-        REGISTRY_NAME: ${{ steps.get_acr_name.outputs.registry_name}}
-      run: |
-          ACR_SERVER=$(az acr show --name "${{ env.REGISTRY_NAME }}" --query "loginServer" --output tsv)
+          ACR_SERVER=$(az acr list --resource-group "${{ env.RESOURCE_GROUP }}" --query "[0].loginServer" -o tsv)
           echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
 
     - name: Build and Upload Image
       env:
-        ACR_LOGIN_SERVER: ${{ steps.deployAcrStep.outputs.acrLoginServer}}
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
+        IMAGE_NAME: "contosospaapi"
         ACR_LOGIN_SERVER_NAME: ${{ steps.get_login_server.outputs.login_server}}
       run: |
-        echo "ACR Name ${{ env.ACR_NAME }}"
-        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image contosospaapi:${{ env.IMAGE_TAG }} --image contosospaapi:latest --file ./Contoso.Spa.Api/Dockerfile .
+        echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
+        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Spa.Api/Dockerfile .
 
     - name: Update Container App image source
       uses: azure/arm-deploy@65ae74fb7aec7c680c88ef456811f353adae4d06
