@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contoso-spa-api
+  namespace: contoso-apps
+  labels:
+    app: contoso-spa-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: contoso-spa-api
+  template:
+    metadata:
+      labels:
+        app: contoso-spa-api
+    spec:
+      containers:
+      - name: contoso-spa-api
+        image: ACR_NAME.azurecr.io/contosospaapi:IMAGE_TAG
+        ports:
+        - containerPort: 8080
+        env:
+        - name: AllowedOrigins__0
+          value: "*"
+        envFrom:
+        - configMapRef:
+            name: app-config
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /weatherforecast
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /weatherforecast
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
