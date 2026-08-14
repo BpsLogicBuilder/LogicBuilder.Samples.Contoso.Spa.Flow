@@ -12,6 +12,9 @@
     <File Path="infrastructure/BicepCli_contosospaapi.txt" />
     <File Path="infrastructure/contosospaapi.bicep" />
   </Folder>
+  <Folder Name="/Infra/aks/">
+    <File Path="infrastructure/aks/deployment.yaml" />
+  </Folder>
   <Folder Name="/SPA/">
     <Project Path="Contoso.Spa.Flow/Contoso.Spa.Flow.csproj" />
   </Folder>
@@ -19,6 +22,7 @@
     <Project Path="Contoso.Spa.Flow.Tests/Contoso.Spa.Flow.Tests.csproj" />
   </Folder>
   <Folder Name="/_Solution Items/">
+    <File Path=".github/workflows/cd-aks.yaml" />
     <File Path=".github/workflows/cd.yml" />
     <File Path=".github/workflows/check-for-ab-number.yml" />
     <File Path=".github/workflows/ci.yml" />
