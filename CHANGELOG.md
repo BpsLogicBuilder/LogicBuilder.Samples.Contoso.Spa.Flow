@@ -1,3 +1,4 @@
+* 2026-08-14 - AB#177: Fix SonarCloud securiry issues.
 * 2026-08-14 - AB#177: Add AKS deployment workflow.
 * 2026-08-03 - AB#176: Simplify "Get Existing ACR Login Server" in CD workflow.
 * 2026-08-02 - AB#176: Fix bad YAML expression.

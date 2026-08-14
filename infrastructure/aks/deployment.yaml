@@ -15,6 +15,7 @@ spec:
       labels:
         app: contoso-spa-api
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: contoso-spa-api
         image: ACR_NAME.azurecr.io/contosospaapi:IMAGE_TAG
@@ -30,6 +31,7 @@ spec:
           requests:
             memory: "512Mi"
             cpu: "500m"
+            ephemeral-storage: "512Mi"
           limits:
             memory: "1Gi"
             cpu: "1000m"
