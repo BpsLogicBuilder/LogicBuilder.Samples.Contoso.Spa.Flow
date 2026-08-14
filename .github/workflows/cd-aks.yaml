@@ -97,6 +97,15 @@ jobs:
           echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
           echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
 
+    - name: Get AKS cluster name
+      id: get_aks_cluster
+      env:
+        AZURE_RG_CONTOSO_AKS: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
+      run: |
+        AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.AZURE_RG_CONTOSO_AKS }} --name main --query properties.outputs.aksClusterName.value -o tsv)
+        echo "::add-mask::$AKS_CLUSTER_NAME"
+        echo "aks_cluster_name=$AKS_CLUSTER_NAME" >> $GITHUB_OUTPUT
+
     - name: Build and Upload Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
@@ -105,6 +114,13 @@ jobs:
       run: |
         echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
         az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Spa.Api/Dockerfile .
+
+    - name: Get AKS Credentials
+      env:
+        RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
+        AKS_CLUSTER_NAME: ${{ steps.get_aks_cluster.outputs.aks_cluster_name }}
+      run: |
+        az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
 
     - name: Deploy Manifext
       env:
