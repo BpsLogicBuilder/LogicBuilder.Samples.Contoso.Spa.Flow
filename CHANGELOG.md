@@ -1,3 +1,4 @@
+* 2026-08-14 - AB#177: Fix AKS namespace in manifest deployment.
 * 2026-08-14 - AB#177: Get AKS credential to apply manifest.
 * 2026-08-14 - AB#177: Fix SonarCloud securiry issues.
 * 2026-08-14 - AB#177: Add AKS deployment workflow.
