@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace Microsoft.Extensions.DependencyInjection
 #pragma warning restore IDE0130
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class SpaFlowServiceRegistrations
     {
         public static IServiceCollection AddSpaFlowServices(this IServiceCollection services)
