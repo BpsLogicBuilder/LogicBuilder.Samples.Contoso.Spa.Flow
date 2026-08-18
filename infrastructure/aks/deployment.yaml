@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: contoso-spa-api
-  namespace: contoso-apps
+  namespace: CONTOSO_APP_NAMESPACE
   labels:
     app: contoso-spa-api
 spec:
@@ -16,12 +16,15 @@ spec:
         app: contoso-spa-api
     spec:
       automountServiceAccountToken: false
+      serviceAccountName: CONTOSO_SPA_API_SERVICEACCOUNT_NAME
       containers:
       - name: contoso-spa-api
         image: ACR_NAME.azurecr.io/contosospaapi:IMAGE_TAG
         ports:
         - containerPort: 8080
         env:
+        - name: APPLICATION_CONFIGURATION_ENDPOINT
+          value: "APP_CONFIG_ENDPOINT"
         - name: AllowedOrigins__0
           value: "*"
         envFrom:
