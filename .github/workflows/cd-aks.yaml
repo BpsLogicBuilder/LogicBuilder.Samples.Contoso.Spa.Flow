@@ -84,15 +84,15 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Get Deployment Outputs
-      id: get_deployment_outpots
+      id: get_deployment_outputs
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
       run: |
-          ACR_SERVER=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrLoginServer.value -o tsv)
-          echo "::add-mask::$ACR_SERVER"
-
           ACR_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.acrName.value -o tsv)
           echo "::add-mask::$ACR_NAME"
+
+          APP_CONFIG_ENDPOINT=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.appConfigurationEndPoint.value -o tsv)
+          echo "::add-mask::$APP_CONFIG_ENDPOINT"
 
           AKS_CLUSTER_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.aksClusterName.value -o tsv)
           echo "::add-mask::$AKS_CLUSTER_NAME"
@@ -100,33 +100,42 @@ jobs:
           CONTOSO_APP_NAMESPACE=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.kubernetesNamespace.value -o tsv)
           echo "::add-mask::$CONTOSO_APP_NAMESPACE"
 
-          echo "login_server=$ACR_SERVER" >> $GITHUB_OUTPUT
+          CONTOSO_SPA_API_SERVICEACCOUNT_NAME=$(az deployment group show --resource-group ${{ env.RESOURCE_GROUP }} --name main --query properties.outputs.contosoSpaApiServiceAccountName.value -o tsv)
+          echo "::add-mask::$CONTOSO_SPA_API_SERVICEACCOUNT_NAME"
+
           echo "acr_name=$ACR_NAME" >> $GITHUB_OUTPUT
+          echo "app_config_endpoint=$APP_CONFIG_ENDPOINT" >> $GITHUB_OUTPUT
           echo "aks_cluster_name=$AKS_CLUSTER_NAME" >> $GITHUB_OUTPUT
           echo "contoso_app_namespace=$CONTOSO_APP_NAMESPACE" >> $GITHUB_OUTPUT
+          echo "contoso_spa_api_serviceaccount_name=$CONTOSO_SPA_API_SERVICEACCOUNT_NAME" >> $GITHUB_OUTPUT
 
     - name: Build and Upload Image
       env:
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
         IMAGE_NAME: "contosospaapi"
-        ACR_LOGIN_SERVER_NAME: ${{ steps.get_deployment_outpots.outputs.login_server}}
+        ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
       run: |
-        echo "ACR LOGIN SERVER NAME ${{ env.ACR_LOGIN_SERVER_NAME }}"
-        az acr build --registry ${{ env.ACR_LOGIN_SERVER_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Spa.Api/Dockerfile .
+        echo "ACR NAME ${{ env.ACR_NAME }}"
+        az acr build --registry ${{ env.ACR_NAME }} --image ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --image ${{ env.IMAGE_NAME }}:latest --file ./Contoso.Spa.Api/Dockerfile .
 
     - name: Get AKS Credentials
       env:
         RESOURCE_GROUP: ${{ secrets.AZURE_RG_CONTOSO_AKS }}
-        AKS_CLUSTER_NAME: ${{ steps.get_deployment_outpots.outputs.aks_cluster_name }}
+        AKS_CLUSTER_NAME: ${{ steps.get_deployment_outputs.outputs.aks_cluster_name }}
       run: |
         az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER_NAME }}
 
     - name: Deploy Manifext
       env:
-        ACR_NAME: ${{ steps.get_deployment_outpots.outputs.acr_name }}
+        ACR_NAME: ${{ steps.get_deployment_outputs.outputs.acr_name }}
+        APP_CONFIG_ENDPOINT: ${{ steps.get_deployment_outputs.outputs.app_config_endpoint }}
         IMAGE_TAG: "v1.0.${{ github.run_number }}"
-        CONTOSO_APP_NAMESPACE: ${{ steps.get_deployment_outpots.outputs.contoso_app_namespace }}
+        CONTOSO_APP_NAMESPACE: ${{ steps.get_deployment_outputs.outputs.contoso_app_namespace }}
+        CONTOSO_SPA_API_SERVICEACCOUNT_NAME: ${{ steps.get_deployment_outputs.contoso_spa_api_serviceaccount_name }}
       run: |
         sed -e "s|ACR_NAME|${{ env.ACR_NAME }}|g" \
+        -e "s|APP_CONFIG_ENDPOINT|${{ env.APP_CONFIG_ENDPOINT }}|g" \
         -e "s|IMAGE_TAG|${{ env.IMAGE_TAG }}|g" \
+        -e "s|CONTOSO_APP_NAMESPACE|${{ env.CONTOSO_APP_NAMESPACE }}|g" \
+        -e "s|CONTOSO_SPA_API_SERVICEACCOUNT_NAME|${{ env.CONTOSO_SPA_API_SERVICEACCOUNT_NAME }}|g" \
         infrastructure/aks/deployment.yaml | kubectl apply -f - -n ${{ env.CONTOSO_APP_NAMESPACE }}
