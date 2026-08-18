@@ -1,3 +1,5 @@
+* 2026-08-18 - AB#203: SPA API service account name assignment
+* 2026-08-18 - AB#203: Fix HttpClient exception
 * 2026-08-18 - AB#208: Resolve code coverage.
 * 2026-08-18 - AB#208: Add App Configuration to AKS deployment.
 * 2026-08-16 - AB#208: Add App Configuration to deployment.
