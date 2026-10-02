@@ -1,3 +1,4 @@
+* 2026-10-02 - AB#231: Add Chat target module.
 * 2026-08-18 - AB#203: SPA API service account name assignment
 * 2026-08-18 - AB#203: Fix HttpClient exception
 * 2026-08-18 - AB#208: Resolve code coverage.

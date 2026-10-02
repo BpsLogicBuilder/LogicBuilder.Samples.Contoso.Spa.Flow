@@ -1,10 +1,38 @@
-﻿using LogicBuilder.App.Spa.Forms.Parameters.Common;
+﻿using LogicBuilder.App.Spa.Business.ScreenSettings.Views;
+using LogicBuilder.App.Spa.Forms.Parameters.Common;
+using LogicBuilder.App.Spa.Utils;
 using System;
 
 namespace Contoso.Spa.Flow.Tests
 {
     public class CustomDialogsTest
     {
+        [Fact]
+        public void DisplayChatFormThrowsArgumentException_ForInvalidViewType()
+        {
+            //arrange
+            var signalRConnection = new SignalRConnectionParameters(
+                "/agentChatHub",
+                "ReceiveAgentError",
+                "ReceiveAgentChunk",
+                "ReceiveAgentResponseComplete",
+                "SendMessageToAgent",
+                "SessionInitialized"
+            );
+
+            // Act
+            ChatFormSettingsParameters setting = new(
+                agentConfigurationIdentifier: "knowledge-search-only",
+                chatHeight: 550,
+                chatWidth: 600,
+                signalRConnection: signalRConnection
+            );
+            CustomDialogs customDialogs = new(null!, null!);
+
+            //act && assert
+            Assert.Throws<ArgumentException>(() => customDialogs.DisplayChatForm(setting, ViewType.Grid, []));
+        }
+
         [Fact]
         public void DisplayEditFormThrowsArgumentException_ForInvalidViewType()
         {
@@ -19,7 +47,7 @@ namespace Contoso.Spa.Flow.Tests
             CustomDialogs customDialogs = new(null!, null!);
 
             //act && assert
-            Assert.Throws<ArgumentException>(() => customDialogs.DisplayEditForm(setting, ScreenSettings.Views.ViewType.Grid, []));
+            Assert.Throws<ArgumentException>(() => customDialogs.DisplayEditForm(setting, ViewType.Grid, []));
         }
 
         [Fact]
@@ -35,7 +63,7 @@ namespace Contoso.Spa.Flow.Tests
             CustomDialogs customDialogs = new(null!, null!);
 
             //act && assert
-            Assert.Throws<ArgumentException>(() => customDialogs.DisplayDetailForm(setting, ScreenSettings.Views.ViewType.Grid, []));
+            Assert.Throws<ArgumentException>(() => customDialogs.DisplayDetailForm(setting, ViewType.Grid, []));
         }
     }
 }

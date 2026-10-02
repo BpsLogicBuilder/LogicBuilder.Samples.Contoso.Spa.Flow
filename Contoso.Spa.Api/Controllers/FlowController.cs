@@ -1,6 +1,6 @@
-﻿using Contoso.Spa.Flow.Interfaces;
-using Contoso.Spa.Flow.Options;
-using Contoso.Spa.Flow.Requests;
+﻿using Contoso.Spa.Flow.Options;
+using LogicBuilder.App.Spa.Business.Requests;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

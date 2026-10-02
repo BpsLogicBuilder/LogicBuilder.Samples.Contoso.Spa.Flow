@@ -1,5 +1,5 @@
-﻿using Contoso.Spa.Flow.Interfaces;
-using Contoso.Spa.Flow.Requests.TransientFlows;
+﻿using LogicBuilder.App.Spa.Business.Requests.TransientFlows;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Contoso.Spa.Api.Controllers

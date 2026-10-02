@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using Contoso.Domain.Entities;
 using Contoso.Spa.Flow.Cache;
-using Contoso.Spa.Flow.Interfaces;
-using Contoso.Spa.Flow.Requests;
-using Contoso.Spa.Flow.ScreenSettings.Views;
 using LogicBuilder.App.Spa.AutoMapperProfiles;
+using LogicBuilder.App.Spa.Business.Requests;
+using LogicBuilder.App.Spa.Business.ScreenSettings.Views;
 using LogicBuilder.App.Spa.Forms.Configuration.Common;
+using LogicBuilder.App.Spa.Utils;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using LogicBuilder.EntityFrameworkCore.Mapping;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -35,7 +37,7 @@ namespace Contoso.Spa.Flow.Tests
             IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
 
             //act
-            var result = flowManager.Start(initialFlow, 6);
+            var result = flowManager.Start(initialFlow, 99);
 
             //assert
             Assert.Equal(ViewType.FlowComplete, result.ScreenSettings.ViewType);
@@ -54,6 +56,21 @@ namespace Contoso.Spa.Flow.Tests
             var screenSettings = Assert.IsType<ScreenSettings<ListFormSettingsDescriptor>>(result.ScreenSettings);
             Assert.Equal(ViewType.List, result.ScreenSettings.ViewType);
             Assert.Equal("About", screenSettings.Settings.Title);
+        }
+
+        [Fact]
+        public void FlowWithChatTarget_StopsAtChatScreen()
+        {
+            //arrange
+            IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
+
+            //act
+            var result = flowManager.Start(initialFlow, TargetModules.Chat);
+
+            //assert
+            var screenSettings = Assert.IsType<ScreenSettings<ChatFormSettingsDescriptor>>(result.ScreenSettings);
+            Assert.Equal(ViewType.Chat, result.ScreenSettings.ViewType);
+            Assert.Equal(600, screenSettings.Settings.ChatWidth);
         }
 
         [Fact]
@@ -84,6 +101,37 @@ namespace Contoso.Spa.Flow.Tests
             var screenSettings = Assert.IsType<ScreenSettings<HtmlPageSettingsDescriptor>>(result.ScreenSettings);
             Assert.Equal(ViewType.Html, result.ScreenSettings.ViewType);
             Assert.Equal("Contoso University", screenSettings.Settings.ContentTemplate!.Title);
+        }
+
+        [Fact]
+        public void PersistentFlowItemsFronNavBarRequest_AreTransferredToTheFlowDataCache_AndFlowSettings()
+        {
+            //arrange
+            IFlowManager flowManager = serviceProvider!.GetRequiredService<IFlowManager>();
+            var persistentFlowItems = new Dictionary<string, object> { ["UserId"] = 1, ["UserName"] = "Smith101", ["UserRating"] = 9.5 };
+
+            //act
+            var result = flowManager.NavStart
+            (
+                new NavBarRequest
+                {
+                    PersistentFlowItems = persistentFlowItems,
+                    InitialModuleName = initialFlow,
+                    TargetModule = TargetModules.Students
+                }
+            );
+
+            //assert
+            Assert.Equal(1, (int)flowManager.FlowDataCache.Items["UserId"]);
+            Assert.Equal("Smith101", (string)flowManager.FlowDataCache.Items["UserName"]);
+            Assert.Equal(9.5, (double)flowManager.FlowDataCache.Items["UserRating"]);
+
+            Assert.Equal(1, (int)result.PersistentFlowItems["UserId"]);
+            Assert.Equal("Smith101", result.PersistentFlowItems["UserName"]);
+            Assert.Equal(9.5, result.PersistentFlowItems["UserRating"]);
+            var screenSettings = Assert.IsType<ScreenSettings<GridSettingsDescriptor>>(result.ScreenSettings);
+            Assert.Equal(ViewType.Grid, result.ScreenSettings.ViewType);
+            Assert.Equal("Students", screenSettings.Settings.Title);
         }
 
         [Fact]

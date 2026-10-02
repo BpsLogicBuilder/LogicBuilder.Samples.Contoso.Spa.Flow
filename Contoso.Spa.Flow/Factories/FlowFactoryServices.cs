@@ -1,7 +1,9 @@
 ﻿using Contoso.Spa.Flow;
-using Contoso.Spa.Flow.Factories;
-using Contoso.Spa.Flow.Interfaces;
+using LogicBuilder.App.Spa.Utils;
+using LogicBuilder.App.Spa.Utils.Factories;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using LogicBuilder.RulesDirector;
+using System;
 
 #pragma warning disable IDE0130 //Microsoft recommended namespace for service registrations
 namespace Microsoft.Extensions.DependencyInjection

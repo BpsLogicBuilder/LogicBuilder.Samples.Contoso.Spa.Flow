@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Contoso.Spa.Flow;
-using Contoso.Spa.Flow.Cache;
-using Contoso.Spa.Flow.Cache.Interfaces;
-using Contoso.Spa.Flow.Interfaces;
 using LogicBuilder.App.Spa.AutoMapperProfiles;
+using LogicBuilder.App.Spa.Business.Cache;
+using LogicBuilder.App.Spa.Business.Cache.Interfaces;
+using LogicBuilder.App.Spa.Utils;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using LogicBuilder.App.Utils.Rules;
 using LogicBuilder.EntityFrameworkCore.Mapping;
 using LogicBuilder.RulesDirector;
@@ -19,8 +20,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddSpaFlowServices(this IServiceCollection services)
         {
             return services
-                .AddAppUtilsServices()
-                .AddHttpClient()
                 .AddFlowFactories()
                 .AddRulesCacheService
                 (
@@ -40,12 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         ]
                     )
                 )
-                .AddTransient<ICustomActions, CustomActions>()
-                .AddTransient<ICustomDialogs, CustomDialogs>()
-                .AddTransient<IFlowManager, FlowManager>()
-                .AddTransient<ITransientFlowHelper, TransientFlowHelper>()
-                .AddScoped<IFlowDataCache, FlowDataCache>()
-                .AddScoped<Progress>();
+                .AddSpaUtilsServices();
         }
 
         public static IServiceCollection AddAutoMapperServices(this IServiceCollection services)

@@ -1,6 +1,7 @@
 ﻿using Contoso.Domain.Entities;
-using Contoso.Spa.Flow.Interfaces;
-using Contoso.Spa.Flow.Responses.TransientFlows;
+using LogicBuilder.App.Spa.Business.Requests.TransientFlows;
+using LogicBuilder.App.Spa.Business.Responses.TransientFlows;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using LogicBuilder.Expressions.Utils.ExpressionDescriptors;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -25,7 +26,7 @@ namespace Contoso.Spa.Flow.Tests
             ITransientFlowHelper flowHelper = serviceProvider!.GetRequiredService<ITransientFlowHelper>();
 
             //act
-            var result = flowHelper.RunSelectorFlow(new Requests.TransientFlows.SelectorFlowRequest 
+            var result = flowHelper.RunSelectorFlow(new SelectorFlowRequest 
             { 
                 Entity = new CourseModel { },
                 ReloadItemsFlowName = "get-selector"

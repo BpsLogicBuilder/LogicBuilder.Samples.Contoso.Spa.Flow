@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Contoso.Spa.Flow.Interfaces;
-using Contoso.Spa.Flow.ScreenSettings.Views;
 using LogicBuilder.App.Spa.AutoMapperProfiles;
+using LogicBuilder.App.Spa.Business.ScreenSettings.Views;
+using LogicBuilder.App.Spa.Utils.Interfaces;
 using LogicBuilder.EntityFrameworkCore.Mapping;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
