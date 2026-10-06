@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,6 +11,8 @@
     <None Remove="Rulesets\about.resources" />
     <None Remove="Rulesets\callterminateflow.module" />
     <None Remove="Rulesets\callterminateflow.resources" />
+    <None Remove="Rulesets\chat.module" />
+    <None Remove="Rulesets\chat.resources" />
     <None Remove="Rulesets\courses.module" />
     <None Remove="Rulesets\courses.resources" />
     <None Remove="Rulesets\departments.module" />
@@ -34,6 +35,8 @@
     <None Remove="Rulesets\item_filter_students.resources" />
     <None Remove="Rulesets\nav_about.module" />
     <None Remove="Rulesets\nav_about.resources" />
+    <None Remove="Rulesets\nav_chat.module" />
+    <None Remove="Rulesets\nav_chat.resources" />
     <None Remove="Rulesets\nav_courses.module" />
     <None Remove="Rulesets\nav_courses.resources" />
     <None Remove="Rulesets\nav_departments.module" />
@@ -57,6 +60,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Rulesets\callterminateflow.module" />
     <EmbeddedResource Include="Rulesets\callterminateflow.resources" />
+    <EmbeddedResource Include="Rulesets\chat.module" />
+    <EmbeddedResource Include="Rulesets\chat.resources" />
     <EmbeddedResource Include="Rulesets\courses.module">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -119,6 +124,8 @@
     <EmbeddedResource Include="Rulesets\nav_about.resources">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Rulesets\nav_chat.module" />
+    <EmbeddedResource Include="Rulesets\nav_chat.resources" />
     <EmbeddedResource Include="Rulesets\nav_courses.module">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -158,13 +165,15 @@
   </ItemGroup>
 
   <ItemGroup>
-		<PackageReference Include="LogicBuilder.App.Spa.AutoMapperProfiles" Version="1.0.4" />
-    <PackageReference Include="LogicBuilder.App.Spa.Forms.Configuration" Version="1.0.2" />
-    <PackageReference Include="LogicBuilder.App.Spa.Forms.Parameters" Version="1.0.3" />
-    <PackageReference Include="LogicBuilder.App.Utils" Version="1.0.7" />
+		<PackageReference Include="LogicBuilder.App.Spa.AutoMapperProfiles" Version="1.0.5" />
+		<PackageReference Include="LogicBuilder.App.Spa.Forms.Configuration" Version="1.0.3" />
+		<PackageReference Include="LogicBuilder.App.Spa.Forms.Parameters" Version="1.0.4" />
+		<PackageReference Include="LogicBuilder.App.Spa.Utils" Version="1.0.3" />
+    <PackageReference Include="LogicBuilder.App.Utils" Version="1.0.8" />
 		<PackageReference Include="LogicBuilder.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.11" />
+    <PackageReference Include="LogicBuilder.Structures" Version="8.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup>

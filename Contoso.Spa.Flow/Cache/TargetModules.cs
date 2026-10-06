@@ -8,5 +8,6 @@
         public const int Departments = 3;
         public const int Courses = 4;
         public const int Instructors = 5;
+        public const int Chat = 6;
     }
 }
