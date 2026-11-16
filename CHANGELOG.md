@@ -1,3 +1,4 @@
+* 2026-11-16 - AB#269: Turn on Application Insights.
 * 2026-10-16 - AB#246: Rename cd-aks.yaml to cd-aks.yml.
 * 2026-10-06 - AB#231: Latest LogicBuilder.App.Spa.* packages.
 * 2026-10-02 - AB#231: Add Chat target module.
